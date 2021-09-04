@@ -5,7 +5,6 @@ import com.burak.myheroes.data.Comic
 import com.burak.myheroes.data.MarvelCharacter
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -26,5 +25,4 @@ interface ApiService {
                                      @Query("limit") limit: Int = 10,
                                      @Query("apikey") apikey: String = "deec2631188bf94df88017d047a0eccd"):
             Response<CharactersResponse<Comic>>
-
 }
