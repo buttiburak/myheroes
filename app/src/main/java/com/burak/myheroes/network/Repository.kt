@@ -1,6 +1,7 @@
 package com.burak.myheroes.network
 
 import com.burak.myheroes.data.MarvelCharacter
+import com.burak.myheroes.util.AuthenticationUtil
 import javax.inject.Inject
 
 
@@ -9,7 +10,9 @@ import javax.inject.Inject
  */
 class Repository @Inject constructor(private val apiService: ApiService) {
     suspend fun fetchCharacters(offset: Int): List<MarvelCharacter>? {
-        val response = apiService.getCharacters(offset = offset)
+        val timestamp = System.currentTimeMillis()
+        val response = apiService.getCharacters(offset = offset, ts = timestamp,
+            hash = AuthenticationUtil.getMd5Digest(timestamp))
         if (response.isSuccessful) {
             val result = response.body()
             result?.let {
