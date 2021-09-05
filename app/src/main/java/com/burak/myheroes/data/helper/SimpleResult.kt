@@ -11,7 +11,7 @@ sealed class SimpleResult<out T> {
 
         fun <T> error(msg: String, data: T? = null) = Error(msg, data)
 
-        fun <T> loading(data: T? = null) = Loading(data)
+        fun <T> loading(data: T? = null, loadMore: Boolean) = Loading(data, loadMore)
 
     }
 

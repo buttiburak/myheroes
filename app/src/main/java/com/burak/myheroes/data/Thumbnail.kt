@@ -8,5 +8,7 @@ import com.squareup.moshi.Json
  */
 data class Thumbnail(@field:Json(name = "path") val path: String,
                      @field:Json(name = "extension") val extension: String) {
-    fun getFullPath(): String = "$path.$extension"
+    fun getSmallPath(): String = "$path/standard_medium.$extension"
+
+    fun getBiggerPath(): String = "$path/landscape_xlarge.$extension"
 }

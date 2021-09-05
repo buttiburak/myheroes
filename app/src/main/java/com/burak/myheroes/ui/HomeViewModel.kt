@@ -21,19 +21,21 @@ class HomeViewModel @Inject constructor(private val repository: Repository): Vie
     val characters: LiveData<SimpleResult<MutableList<MarvelCharacter>>> = _characters
 
     init {
-        getCharacters()
+        getCharacters(loadMore = false)
     }
 
-    fun getCharacters() {
+    fun getCharacters(loadMore: Boolean) {
         viewModelScope.launch {
-            fetchCharacters()
+            fetchCharacters(loadMore)
         }
     }
 
-    private suspend fun fetchCharacters() {
-        _characters.postValue(SimpleResult.loading())
+    fun isLoading(): Boolean = _characters.value is SimpleResult.Loading
 
-        val characters = repository.fetchCharacters(0)
+    private suspend fun fetchCharacters(loadMore: Boolean) {
+        _characters.postValue(SimpleResult.loading(loadMore = loadMore))
+
+        val characters = repository.fetchCharacters(loadMore)
         characters?.let {
             _characters.postValue(SimpleResult.success(it.toMutableList()))
         } ?: kotlin.run {

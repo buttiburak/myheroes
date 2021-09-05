@@ -11,10 +11,12 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder
  */
 object ImageUtil {
     private fun parseUri(url: String): Uri {
-        return if (url.isEmpty()) {
+        //Change http to https for fix okhttp error
+        val newUrl = url.replaceFirst("http", "https")
+        return if (newUrl.isEmpty()) {
             Uri.parse("")
         } else {
-            Uri.parse(url)
+            Uri.parse(newUrl)
         }
     }
 

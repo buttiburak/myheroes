@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.burak.myheroes.data.MarvelCharacter
 import com.burak.myheroes.data.helper.SimpleResult
 import com.burak.myheroes.databinding.FragmentHomeBinding
+import com.burak.myheroes.util.EndlessScrollListener
 import com.facebook.drawee.view.SimpleDraweeView
 
 
@@ -42,7 +43,7 @@ class HomeFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.homeSwipeToRefreshLayout.setOnRefreshListener {
-            homeViewModel.getCharacters()
+            homeViewModel.getCharacters(loadMore = false)
         }
 
         setupAdapter()
@@ -76,6 +77,13 @@ class HomeFragment: Fragment() {
                 startPostponedEnterTransition()
                 true
             }
+            addOnScrollListener(object: EndlessScrollListener() {
+                override fun onLoadMore() {
+                    homeViewModel.getCharacters(loadMore = true)
+                }
+
+                override fun isLoading(): Boolean = homeViewModel.isLoading()
+            })
         }
     }
 
@@ -84,6 +92,9 @@ class HomeFragment: Fragment() {
             when (it) {
                 is SimpleResult.Loading -> {
                     binding.homeSwipeToRefreshLayout.isRefreshing = true
+                    if (::charactersAdapter.isInitialized) {
+                        charactersAdapter.loadMore = it.loadMore
+                    }
                 }
                 is SimpleResult.Success -> {
                     binding.homeSwipeToRefreshLayout.isRefreshing = false

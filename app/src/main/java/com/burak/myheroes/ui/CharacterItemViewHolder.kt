@@ -21,7 +21,7 @@ class CharacterItemViewHolder(private val binding: ItemCharacterBinding) :
 
         binding.characterItemNameTextView.text = character.name
 
-        ImageUtil.setImageURL(binding.characterItemImageView, character.thumbnail.getFullPath())
+        ImageUtil.setImageURL(binding.characterItemImageView, character.thumbnail.getSmallPath())
 
         itemView.setOnClickListener {
             onItemClickListener.onItemClicked(character,

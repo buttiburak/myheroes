@@ -14,6 +14,8 @@ class CharactersAdapter(private var characters: MutableList<MarvelCharacter>,
                         private val onItemClickListener: OnItemClickListener):
     RecyclerView.Adapter<CharacterItemViewHolder>()  {
 
+    var loadMore = false
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterItemViewHolder {
         val binding = ItemCharacterBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
@@ -27,9 +29,10 @@ class CharactersAdapter(private var characters: MutableList<MarvelCharacter>,
     }
 
     fun submitList(charactersList: MutableList<MarvelCharacter>) {
-        characters.clear()
+        if (!loadMore) {
+            characters.clear()
+        }
         characters.addAll(charactersList)
         notifyDataSetChanged()
     }
-
 }
