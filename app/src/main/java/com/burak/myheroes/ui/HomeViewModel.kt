@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.burak.myheroes.data.Comic
 import com.burak.myheroes.data.MarvelCharacter
 import com.burak.myheroes.data.helper.SimpleResult
 import com.burak.myheroes.data.helper.SingleLiveEvent
@@ -27,6 +28,9 @@ class HomeViewModel @Inject constructor(private val repository: Repository): Vie
     private val _selectedPosition: SingleLiveEvent<Int> = SingleLiveEvent()
     val selectedPosition: LiveData<Int> = _selectedPosition
 
+    private val _comics: MutableLiveData<SimpleResult<MutableList<Comic>>> = MutableLiveData()
+    val comics: LiveData<SimpleResult<MutableList<Comic>>> = _comics
+
     init {
         getCharacters(loadMore = false)
     }
@@ -34,6 +38,12 @@ class HomeViewModel @Inject constructor(private val repository: Repository): Vie
     fun getCharacters(loadMore: Boolean) {
         viewModelScope.launch {
             fetchCharacters(loadMore)
+        }
+    }
+
+    fun getComics(characterId: Int) {
+        viewModelScope.launch {
+            fetchComics(characterId)
         }
     }
 
@@ -58,6 +68,13 @@ class HomeViewModel @Inject constructor(private val repository: Repository): Vie
 
         val charactersList = repository.fetchCharacters(loadMore)
         setCharacterList(charactersList)
+    }
+
+    private suspend fun fetchComics(characterId: Int) {
+        _comics.postValue(SimpleResult.loading())
+
+        val comicsList = repository.fetchComicsOfCharacter(characterId)
+        _comics.postValue(SimpleResult.success(comicsList.toMutableList()))
     }
 
     private fun setCharacterList(charactersList: List<MarvelCharacter>?) {

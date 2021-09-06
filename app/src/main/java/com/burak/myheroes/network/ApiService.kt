@@ -26,6 +26,7 @@ interface ApiService {
     suspend fun getComicsOfCharacter(@Path("characterId") characterId: Int,
                                      @Query("orderBy") orderBy: String = "-modified",
                                      @Query("limit") limit: Int = 10,
+                                     @Query("dateRange") dateRange: String = "2005-01-01,2021-09-01",
                                      @Query("ts") ts: Long = 0,
                                      @Query("hash") hash: String = "",
                                      @Query("apikey") apikey: String = AuthenticationUtil.MARVEL_PUBLIC_KEY):

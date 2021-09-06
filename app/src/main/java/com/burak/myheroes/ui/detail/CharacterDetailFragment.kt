@@ -6,15 +6,20 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.burak.myheroes.data.MarvelCharacter
+import com.burak.myheroes.data.helper.SimpleResult
 import com.burak.myheroes.databinding.FragmentCharacterDetailBinding
 import com.burak.myheroes.ui.HomeViewModel
 import com.burak.myheroes.util.ImageUtil
 import com.burak.myheroes.util.TransitionUtil
+import com.burak.myheroes.util.extensions.hide
+import com.burak.myheroes.util.extensions.show
 
 
 /**
@@ -22,6 +27,7 @@ import com.burak.myheroes.util.TransitionUtil
  */
 class CharacterDetailFragment: Fragment() {
     private val homeViewModel: HomeViewModel by activityViewModels()
+    private lateinit var comicsAdapter: ComicsAdapter
     private var _binding: FragmentCharacterDetailBinding? = null
     private val binding get() = _binding!!
 
@@ -47,6 +53,7 @@ class CharacterDetailFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupAdapter()
         observeViewModel()
     }
 
@@ -65,11 +72,36 @@ class CharacterDetailFragment: Fragment() {
         _binding = null
     }
 
+    private fun setupAdapter() {
+        comicsAdapter = ComicsAdapter(mutableListOf())
+
+        binding.characterComicsList.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = comicsAdapter
+            addItemDecoration(DividerItemDecoration(requireContext(), LinearLayout.VERTICAL))
+        }
+    }
+
     private fun observeViewModel() {
         homeViewModel.apply {
-            selectedCharacters.observe(viewLifecycleOwner, Observer {
+            selectedCharacters.observe(viewLifecycleOwner, {
                 handleSelectedCharacter(it)
-                // fetch comics
+                homeViewModel.getComics(it.id)
+            })
+
+            comics.observe(viewLifecycleOwner, {
+                when (it) {
+                    is SimpleResult.Loading -> {
+                        binding.comicsProgressBar.show()
+                    }
+                    is SimpleResult.Success -> {
+                        binding.comicsProgressBar.hide()
+                        comicsAdapter.submitList(it.data)
+                    }
+                    is SimpleResult.Error -> {
+                        binding.comicsProgressBar.hide()
+                    }
+                }
             })
         }
     }

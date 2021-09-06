@@ -1,5 +1,6 @@
 package com.burak.myheroes.network
 
+import com.burak.myheroes.data.Comic
 import com.burak.myheroes.data.MarvelCharacter
 import com.burak.myheroes.util.AuthenticationUtil
 import javax.inject.Inject
@@ -37,5 +38,21 @@ class Repository @Inject constructor(private val apiService: ApiService) {
             }
         }
         return null
+    }
+
+    suspend fun fetchComicsOfCharacter(characterId: Int): List<Comic> {
+        val timestamp = System.currentTimeMillis()
+        val response = apiService.getComicsOfCharacter(characterId = characterId, ts = timestamp,
+            hash = AuthenticationUtil.getMd5Digest(timestamp))
+        if (response.isSuccessful) {
+            val result = response.body()
+            result?.let {
+                if (it.code == 200 && it.status == "Ok") {
+                    return it.data.results
+                }
+            }
+        }
+
+        return mutableListOf()
     }
 }
