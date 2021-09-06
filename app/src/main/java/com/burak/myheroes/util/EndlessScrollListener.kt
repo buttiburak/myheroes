@@ -18,6 +18,10 @@ abstract class EndlessScrollListener: RecyclerView.OnScrollListener() {
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
+        if (dy == 0) {
+            return
+        }
+
         val layoutManager = recyclerView.layoutManager
 
         visibleItemCount = recyclerView.childCount

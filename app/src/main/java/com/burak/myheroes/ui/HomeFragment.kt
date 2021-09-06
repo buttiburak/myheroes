@@ -8,15 +8,16 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.burak.myheroes.R
 import com.burak.myheroes.data.MarvelCharacter
 import com.burak.myheroes.data.helper.SimpleResult
 import com.burak.myheroes.databinding.FragmentHomeBinding
 import com.burak.myheroes.util.EndlessScrollListener
+import com.burak.myheroes.util.TransitionUtil
 import com.facebook.drawee.view.SimpleDraweeView
 
 
@@ -57,14 +58,15 @@ class HomeFragment: Fragment() {
 
     private fun setupAdapter() {
         charactersAdapter = CharactersAdapter(mutableListOf(), object : OnItemClickListener {
-            override fun onItemClicked(character: MarvelCharacter, draweeView: SimpleDraweeView, title: TextView) {
-//                homeViewModel.selectRecipe(recipe)
-//                val extras = FragmentNavigatorExtras(
-//                    draweeView to
-//                            TransitionUtil.getImageViewTransitionName(requireContext(), recipe.contentfulId),
-//                    title to
-//                            TransitionUtil.getTitleTextViewTransitionName(requireContext(), recipe.contentfulId))
-//                findNavController().navigate(R.id.action_from_home_to_recipe_detail, null, null, extras)
+            override fun onItemClicked(character: MarvelCharacter, position: Int, draweeView: SimpleDraweeView, name: TextView) {
+                homeViewModel.selectCharacter(character, position)
+                val extras = FragmentNavigatorExtras(
+                    draweeView to
+                            TransitionUtil.getImageViewTransitionName(requireContext(), character.id),
+                    name to
+                            TransitionUtil.getNameTextViewTransitionName(requireContext(), character.id))
+
+                findNavController().navigate(R.id.action_from_home_to_character_detail, null, null, extras)
             }
         })
 
@@ -88,7 +90,7 @@ class HomeFragment: Fragment() {
     }
 
     private fun observeViewModel() {
-        homeViewModel.characters.observe(viewLifecycleOwner, Observer {
+        homeViewModel.characters.observe(viewLifecycleOwner, {
             when (it) {
                 is SimpleResult.Loading -> {
                     binding.homeSwipeToRefreshLayout.isRefreshing = true
@@ -109,6 +111,10 @@ class HomeFragment: Fragment() {
                     binding.homeSwipeToRefreshLayout.isRefreshing = false
                 }
             }
+        })
+
+        homeViewModel.selectedPosition.observe(viewLifecycleOwner, {
+            binding.charactersView.smoothScrollToPosition(it)
         })
     }
 }

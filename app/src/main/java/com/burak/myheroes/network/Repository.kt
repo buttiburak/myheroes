@@ -11,10 +11,18 @@ import javax.inject.Inject
 class Repository @Inject constructor(private val apiService: ApiService) {
     private var lastOffset = 0
     private val pageCount = 30
-    suspend fun fetchCharacters(loadMore: Boolean): List<MarvelCharacter>? {
-        if (!loadMore) {
+    private val cachedData = mutableListOf<MarvelCharacter>()
+
+    suspend fun fetchCharacters(loadMore: Boolean = false, fromCache: Boolean = false): List<MarvelCharacter>? {
+        if (!loadMore && !fromCache) {
             lastOffset = 0
+            cachedData.clear()
         }
+
+        if (fromCache) {
+            return cachedData
+        }
+
         val timestamp = System.currentTimeMillis()
         val response = apiService.getCharacters(offset = lastOffset, ts = timestamp,
             hash = AuthenticationUtil.getMd5Digest(timestamp))
@@ -23,6 +31,7 @@ class Repository @Inject constructor(private val apiService: ApiService) {
             result?.let {
                 if (it.code == 200 && it.status == "Ok") {
                     lastOffset += pageCount
+                    cachedData.addAll(it.data.results)
                     return it.data.results
                 }
             }

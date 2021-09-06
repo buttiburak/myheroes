@@ -25,7 +25,7 @@ class CharactersAdapter(private var characters: MutableList<MarvelCharacter>,
     override fun getItemCount(): Int = characters.size
 
     override fun onBindViewHolder(holder: CharacterItemViewHolder, position: Int) {
-        holder.handleCharacter(characters[position], onItemClickListener)
+        holder.handleCharacter(characters[position], onItemClickListener, position)
     }
 
     fun submitList(charactersList: MutableList<MarvelCharacter>) {

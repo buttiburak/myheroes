@@ -9,5 +9,5 @@ import com.facebook.drawee.view.SimpleDraweeView
  * Created by mburak on 5.09.2021.
  */
 interface OnItemClickListener {
-    fun onItemClicked(character: MarvelCharacter, draweeView: SimpleDraweeView, name: TextView)
+    fun onItemClicked(character: MarvelCharacter, position: Int,  draweeView: SimpleDraweeView, name: TextView)
 }

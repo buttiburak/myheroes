@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">My Heroes</string>
+    <string name="description">Description</string>
+    <string name="comics">Comics</string>
+
+    <string name="image_view_transition_name">image_%s</string>
+    <string name="name_text_view_transition_name">name_%s</string>
 </resources>

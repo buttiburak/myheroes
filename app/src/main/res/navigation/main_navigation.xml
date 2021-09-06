@@ -10,13 +10,19 @@
         android:name="com.burak.myheroes.ui.HomeFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_home" >
-<!--        <action-->
-<!--            android:id="@+id/action_from_home_to_recipe_detail"-->
-<!--            app:destination="@id/navigation_recipe_detail"-->
-<!--            app:enterAnim="@anim/slide_in_right"-->
-<!--            app:exitAnim="@anim/slide_out_left"-->
-<!--            app:popEnterAnim="@anim/slide_in_left"-->
-<!--            app:popExitAnim="@anim/slide_out_right" />-->
+        <action
+            android:id="@+id/action_from_home_to_character_detail"
+            app:destination="@id/navigation_character_detail"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_character_detail"
+        android:name="com.burak.myheroes.ui.detail.CharacterDetailFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_character_detail" />
 
 </navigation>
