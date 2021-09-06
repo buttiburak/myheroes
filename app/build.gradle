@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 ext.versions = [
@@ -23,7 +25,8 @@ ext.versions = [
         hilt_compiler_x     : '1.0.0-beta01',
         fresco              : '2.5.0',
         swipetorefresh      : '1.1.0',
-        interceptor         : '3.12.1'
+        interceptor         : '3.12.1',
+        firebase            : '28.4.0'
 ]
 
 
@@ -66,6 +69,11 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.swipetorefresh"
 
     implementation "com.facebook.fresco:fresco:$versions.fresco"
+
+    //Firebase
+    implementation platform("com.google.firebase:firebase-bom:$versions.firebase")
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$versions.nav_version"
