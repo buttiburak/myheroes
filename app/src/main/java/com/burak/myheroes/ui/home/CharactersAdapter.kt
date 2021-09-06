@@ -1,4 +1,4 @@
-package com.burak.myheroes.ui
+package com.burak.myheroes.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +11,8 @@ import com.burak.myheroes.databinding.ItemCharacterBinding
  * Created by mburak on 5.09.2021.
  */
 class CharactersAdapter(private var characters: MutableList<MarvelCharacter>,
-                        private val onItemClickListener: OnItemClickListener):
+                        private val onItemClickListener: OnItemClickListener
+):
     RecyclerView.Adapter<CharacterItemViewHolder>()  {
 
     var loadMore = false

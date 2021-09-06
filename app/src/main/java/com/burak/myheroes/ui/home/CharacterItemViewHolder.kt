@@ -1,4 +1,4 @@
-package com.burak.myheroes.ui
+package com.burak.myheroes.ui.home
 
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView

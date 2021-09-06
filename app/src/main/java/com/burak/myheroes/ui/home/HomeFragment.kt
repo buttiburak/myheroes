@@ -1,4 +1,4 @@
-package com.burak.myheroes.ui
+package com.burak.myheroes.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

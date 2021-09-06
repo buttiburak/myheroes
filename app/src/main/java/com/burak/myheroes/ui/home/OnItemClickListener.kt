@@ -1,4 +1,4 @@
-package com.burak.myheroes.ui
+package com.burak.myheroes.ui.home
 
 import android.widget.TextView
 import com.burak.myheroes.data.MarvelCharacter

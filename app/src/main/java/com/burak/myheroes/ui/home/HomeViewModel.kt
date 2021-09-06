@@ -1,4 +1,4 @@
-package com.burak.myheroes.ui
+package com.burak.myheroes.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

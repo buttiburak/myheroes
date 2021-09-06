@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.burak.myheroes.data.MarvelCharacter
 import com.burak.myheroes.data.helper.SimpleResult
 import com.burak.myheroes.databinding.FragmentCharacterDetailBinding
-import com.burak.myheroes.ui.HomeViewModel
+import com.burak.myheroes.ui.home.HomeViewModel
 import com.burak.myheroes.util.ImageUtil
 import com.burak.myheroes.util.TransitionUtil
 import com.burak.myheroes.util.extensions.hide
